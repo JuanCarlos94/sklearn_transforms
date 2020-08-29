@@ -12,5 +12,8 @@ class DropColumns(BaseEstimator, TransformerMixin):
     def transform(self, X):
         # Primeiro realizamos a cópia do dataframe 'X' de entrada
         data = X.copy()
-        # Retornamos um novo dataframe sem as colunas indesejadas
-        return data.drop(labels=self.columns, axis='columns')
+        data.drop(labels=self.columns, axis='columns', inplace=True)
+        # Remover 4000 registros aleatórios de perfil DIFICULDADE
+        drop_indices_dificuldade = np.random.choice(data[data['PERFIL'] == 'DIFICULDADE'].index, 4000, replace=False)
+        data.drop(drop_indices_dificuldade, inplace=True)
+        return data
